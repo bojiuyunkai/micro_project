@@ -1,0 +1,39 @@
+package main
+import (
+		"hz_project/internal/pkg/config"
+		"context"
+		"hz_project/internal/pkg/transports/grpc"
+		"hz_project/api/proto"
+			"hz_project/internal/app/products/grpcclients"
+			"fmt"
+			"hz_project/internal/pkg/consul"
+)
+func main() {
+	
+	viper, err := config.New("/Users/gaozhanghu/Documents/go-project-sample/configs/products.yml")
+	if err != nil {
+		fmt.Println(err);
+	}
+	consulOptions, err := consul.NewOptions(viper)
+	if err != nil {
+		fmt.Println(err);
+	}
+
+	clientOptions, err := grpc.NewClientOptions(viper)
+	if err != nil {
+		fmt.Println(err);
+	}
+	client, err := grpc.NewClient(consulOptions, clientOptions)
+	if err != nil {
+		fmt.Println(err);
+	}
+	detailsClient, err := grpcclients.NewDetailsClient(client)
+
+	req := &proto.GetDetailRequest{
+			Id: 1,
+		}
+
+	c:=context.Background()
+	pd, err := detailsClient.Get(c, req)
+	fmt.Println(pd);
+}

@@ -1,0 +1,28 @@
+app:
+  name: details
+http:
+  mode: release
+  port: 8081
+db:
+  - database: 
+    name: hello
+  - database: 
+    name: dfjkdfj
+log:
+  filename: /tmp/details.log
+  maxSize: 500
+  maxBackups: 3
+  maxAge: 3
+  level: "debug"
+  stdout: false
+consul:
+  addr: localhost:8500
+grpc:
+  port: 0
+jaeger:
+  serviceName: details
+  reporter:
+    localAgentHostPort: "jaeger-agent:6831"
+  sampler:
+    type: const
+    param: 1
